@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,21 @@ namespace Library
         {
             InitializeComponent();
             usersList.AddUser("admin", "i<3c++", UserRights.Admin);
+            StreamReader reader = new StreamReader(@"C:\Test\users.txt");
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                List<string> user = line.Split(' ').ToList();
+                if (user[2].Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    usersList.AddUser(user[0], user[1], UserRights.Admin);
+                }
+                else
+                {
+                    usersList.AddUser(user[0], user[1], UserRights.Regular);
+                }
+            }
+
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -88,18 +104,29 @@ namespace Library
                     }
                     if (addForm.AddClicked)
                     {
-                        if (usersList.GetUser(addForm.Username) == null)//user already exist
+                        if (addForm.Username.Contains(" ") && addForm.Username.Contains(","))
                         {
-                            if (addForm.IsAdmin)
+                            MessageBox.Show("You can't use space or coma for username");
+                            return;
+                        }
+                        if (usersList.GetUser(addForm.Username) == null)//user don't exist
+                        {
+                            StreamWriter txt = new StreamWriter(@"C:\Test\users.txt");
+                            if (addForm.IsAdmin)//if the new user is with admin rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Admin);
+                                txt.Write($"{addForm.Username} {addForm.Password} {UserRights.Admin}");
                             }
-                            else
+                            else//if the new user is with regular rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Regular);
+                                txt.Write($"{addForm.Username} {addForm.Password} {UserRights.Regular}");
                             }
+                            txt.Flush();
+                            txt.Close();
+
                         }
-                        else
+                        else//the user is already exist
                         {
                             MessageBox.Show("This username already exists!\nTry with another username!");
                         }
