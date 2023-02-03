@@ -128,8 +128,9 @@ namespace Library
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -145,26 +146,26 @@ namespace Library
             // booksAddToolStripMenuItem
             // 
             this.booksAddToolStripMenuItem.Name = "booksAddToolStripMenuItem";
-            this.booksAddToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.booksAddToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.booksAddToolStripMenuItem.Text = "Books add";
             // 
             // booksRemoveToolStripMenuItem
             // 
             this.booksRemoveToolStripMenuItem.Name = "booksRemoveToolStripMenuItem";
-            this.booksRemoveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.booksRemoveToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.booksRemoveToolStripMenuItem.Text = "Books remove";
             // 
             // usersAddToolStripMenuItem
             // 
             this.usersAddToolStripMenuItem.Name = "usersAddToolStripMenuItem";
-            this.usersAddToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.usersAddToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.usersAddToolStripMenuItem.Text = "Users add";
             this.usersAddToolStripMenuItem.Click += new System.EventHandler(this.usersAddToolStripMenuItem_Click);
             // 
             // usersRemoveToolStripMenuItem
             // 
             this.usersRemoveToolStripMenuItem.Name = "usersRemoveToolStripMenuItem";
-            this.usersRemoveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.usersRemoveToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.usersRemoveToolStripMenuItem.Text = "Users remove";
             this.usersRemoveToolStripMenuItem.Click += new System.EventHandler(this.usersRemoveToolStripMenuItem_Click);
             // 
@@ -212,7 +213,7 @@ namespace Library
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Library";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
