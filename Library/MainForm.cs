@@ -16,6 +16,7 @@ namespace Library
 
         private User curentUser = null;
         private string currentUsername = string.Empty;
+        private BookManager bookManager = new BookManager();
 
         private UserManager usersList = new UserManager();
         public MainForm()
@@ -184,6 +185,49 @@ namespace Library
             Close();
         }
 
-      
+        private void allToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Book> books = bookManager.GetAllBooks();//da dobawq da gi chete ot txt faila
+            for (int i = 0; i < books.Count; i++)
+            {
+                ListViewItem item = new ListViewItem(books[i].Name);
+                item.SubItems.Add(books[i].Author);
+                item.SubItems.Add(books[i].Type);
+                item.SubItems.Add(books[i].ID);
+                item.SubItems.Add(books[i].Desctiption);
+                listView.Items.Add(item);
+            }
+        }
+
+        private void booksAddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentUsername==string.Empty || curentUser.Rights==UserRights.Regular)
+            {
+                MessageBox.Show("You are not logged in or you don't have admin rights.");
+            }
+            else 
+            {
+            var booksAddForm = new AddBook();
+                booksAddForm.Show();
+                while (!booksAddForm.ButtonAddClicked)
+                {                   
+                        Application.DoEvents();                    
+                }
+                if (booksAddForm.ButtonAddClicked && curentUser.Rights==UserRights.Admin)
+                {
+                    bookManager.AddBook(booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
+                        booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
+                    StreamWriter txt = new StreamWriter(@"C:\Test\books.txt");
+                    txt.Write("{0} {1} {2} {3} {4} {5} {6} {7}", booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
+                        booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
+                    txt.Flush();
+                    txt.Close();
+                }
+
+
+
+            }
+           
+        }
     }
 }

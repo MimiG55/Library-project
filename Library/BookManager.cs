@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Library
 {
@@ -23,12 +24,24 @@ namespace Library
     {
         List<Book> books = new List<Book>();
 
-        public void ViewInfoForAllBooks()
+        public void AddBook(string author, string bookName, string genre, string description, string yearOfPublication, string keyWords, string rating, string isbnNumber )
         {
-            for (int i = 0; i < books.Count; i++)
+            double rate;
+            if (double.TryParse(rating, out rate))
             {
-                Console.WriteLine($"- {books[i].Name}, {books[i].Author}, {books[i].Type}, {books[i].ID}");
+            Book book = new Book(author, bookName, genre, description, yearOfPublication, keyWords, rate, isbnNumber);
+            books.Add(book);
             }
+            else
+            {
+                MessageBox.Show("Incorect format for rating!");
+            }
+
+        }
+
+        public List<Book> GetAllBooks()
+        {
+            return books;
         }
         public void ViewInfoForSpecificBook(string bookID)
         {
@@ -47,7 +60,7 @@ namespace Library
             List<string> comand = keyword.Split(' ').ToList();
             int numKeywords = comand.Count;
             List<Book> searchedBook = new List<Book>();
-            
+
             if (SearchingCriteria.Title == criteria)
             {
                 for (int i = 0; i < books.Count; i++)

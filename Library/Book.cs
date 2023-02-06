@@ -8,15 +8,7 @@ namespace Library
 {
     public class Book
     {
-        //private string Author;
-        //private string Name;
-        //private string Type;
-        //private string Description;
-        //private string YearOfPublication;
-        //private string KeyWords;
-        //private double Rating;
-        //private int ID;
-
+       
         public string Author { get; private set; }
         public string Name { get; private set; }
         public string Type { get; private set; }
