@@ -218,7 +218,7 @@ namespace Library
                     bookManager.AddBook(booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
                         booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
                     StreamWriter txt = new StreamWriter(@"C:\Test\books.txt");
-                    txt.Write("{0} {1} {2} {3} {4} {5} {6} {7}", booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
+                    txt.Write("{0}+{1}+{2}+{3}+{4}+{5}+{6}+{7}", booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
                         booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
                     txt.Flush();
                     txt.Close();
