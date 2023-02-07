@@ -59,6 +59,11 @@ namespace Library
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // ID
+            // 
+            ID.Text = "Name";
+            ID.Width = 265;
+            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -85,7 +90,7 @@ namespace Library
             this.helpToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -153,7 +158,7 @@ namespace Library
             // booksAddToolStripMenuItem
             // 
             this.booksAddToolStripMenuItem.Name = "booksAddToolStripMenuItem";
-            this.booksAddToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.booksAddToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.booksAddToolStripMenuItem.Text = "Books add";
             this.booksAddToolStripMenuItem.Click += new System.EventHandler(this.booksAddToolStripMenuItem_Click);
             // 
@@ -198,19 +203,19 @@ namespace Library
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // findToolStripMenuItem
             // 
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.findToolStripMenuItem.Text = "Find";
             // 
             // sortToolStripMenuItem
             // 
             this.sortToolStripMenuItem.Name = "sortToolStripMenuItem";
-            this.sortToolStripMenuItem.Size = new System.Drawing.Size(124, 26);
+            this.sortToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.sortToolStripMenuItem.Text = "Sort";
             // 
             // listView
@@ -221,6 +226,7 @@ namespace Library
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5});
+            this.listView.GridLines = true;
             this.listView.HideSelection = false;
             this.listView.Location = new System.Drawing.Point(73, 77);
             this.listView.Name = "listView";
@@ -228,11 +234,6 @@ namespace Library
             this.listView.TabIndex = 2;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
-            // 
-            // ID
-            // 
-            ID.Text = "Name";
-            ID.Width = 325;
             // 
             // columnHeader2
             // 
@@ -252,7 +253,7 @@ namespace Library
             // columnHeader5
             // 
             this.columnHeader5.Text = "Description";
-            this.columnHeader5.Width = 458;
+            this.columnHeader5.Width = 480;
             // 
             // MainForm
             // 

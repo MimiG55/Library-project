@@ -41,7 +41,10 @@ namespace Library
             while ((line = bookReader.ReadLine())!=null)
             {
                 List<string> books = line.Split('+').ToList();
-
+                //if (currentUsername != string.Empty)
+                //{
+                    bookManager.AddBook(books[0], books[1], books[2], books[3],books[4], books[5], books[6], books[7]);
+                //}
             }
 
         }
@@ -193,7 +196,9 @@ namespace Library
 
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<Book> books = bookManager.GetAllBooks();//da dobawq da gi chete ot txt faila
+            List<Book> books = bookManager.GetAllBooks();
+            if (currentUsername!=string.Empty)
+            {
             for (int i = 0; i < books.Count; i++)
             {
                 ListViewItem item = new ListViewItem(books[i].Name);
@@ -202,6 +207,11 @@ namespace Library
                 item.SubItems.Add(books[i].ID);
                 item.SubItems.Add(books[i].Desctiption);
                 listView.Items.Add(item);
+            }
+            }
+            else
+            {
+                MessageBox.Show("You should login!");
             }
         }
 
