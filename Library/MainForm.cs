@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace Library
 {
@@ -18,7 +19,7 @@ namespace Library
         private string currentUsername = string.Empty;
         private BookManager bookManager = new BookManager();
         private UserManager usersList = new UserManager();
-       
+
         public MainForm()
         {
             InitializeComponent();
@@ -38,12 +39,12 @@ namespace Library
                 }
             }
             StreamReader bookReader = new StreamReader(@"C:\Test\books.txt");
-            while ((line = bookReader.ReadLine())!=null)
+            while ((line = bookReader.ReadLine()) != null)
             {
                 List<string> books = line.Split('+').ToList();
                 //if (currentUsername != string.Empty)
                 //{
-                    bookManager.AddBook(books[0], books[1], books[2], books[3],books[4], books[5], books[6], books[7]);
+                bookManager.AddBook(books[0], books[1], books[2], books[3], books[4], books[5], books[6], books[7]);
                 //}
             }
 
@@ -121,16 +122,16 @@ namespace Library
                         }
                         if (usersList.GetUser(addForm.Username) == null)//user don't exist
                         {
-                            StreamWriter txt = new StreamWriter(@"C:\Test\users.txt");
+                            StreamWriter txt = new StreamWriter(@"C:\Test\users.txt", true);
                             if (addForm.IsAdmin)//if the new user is with admin rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Admin);
-                                txt.Write($"{addForm.Username} {addForm.Password} {UserRights.Admin}");
+                                txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Admin}");
                             }
                             else//if the new user is with regular rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Regular);
-                                txt.Write($"{addForm.Username} {addForm.Password} {UserRights.Regular}");
+                                txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Regular}");
                             }
                             txt.Flush();
                             txt.Close();
@@ -196,18 +197,19 @@ namespace Library
 
         private void allToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            listView.Items.Clear();
             List<Book> books = bookManager.GetAllBooks();
-            if (currentUsername!=string.Empty)
+            if (currentUsername != string.Empty)
             {
-            for (int i = 0; i < books.Count; i++)
-            {
-                ListViewItem item = new ListViewItem(books[i].Name);
-                item.SubItems.Add(books[i].Author);
-                item.SubItems.Add(books[i].Type);
-                item.SubItems.Add(books[i].ID);
-                item.SubItems.Add(books[i].Desctiption);
-                listView.Items.Add(item);
-            }
+                for (int i = 0; i < books.Count; i++)
+                {
+                    ListViewItem item = new ListViewItem(books[i].Name);
+                    item.SubItems.Add(books[i].Author);
+                    item.SubItems.Add(books[i].Type);
+                    item.SubItems.Add(books[i].ID);
+                    item.SubItems.Add(books[i].Desctiption);
+                    listView.Items.Add(item);
+                }
             }
             else
             {
@@ -217,24 +219,24 @@ namespace Library
 
         private void booksAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentUsername==string.Empty || curentUser.Rights==UserRights.Regular)
+            if (currentUsername == string.Empty || curentUser.Rights == UserRights.Regular)
             {
                 MessageBox.Show("You are not logged in or you don't have admin rights.");
             }
-            else 
+            else
             {
-            var booksAddForm = new AddBook();
+                var booksAddForm = new AddBook();
                 booksAddForm.Show();
                 while (!booksAddForm.ButtonAddClicked)
-                {                   
-                        Application.DoEvents();                    
+                {
+                    Application.DoEvents();
                 }
-                if (booksAddForm.ButtonAddClicked && curentUser.Rights==UserRights.Admin)
+                if (booksAddForm.ButtonAddClicked && curentUser.Rights == UserRights.Admin)
                 {
                     bookManager.AddBook(booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
                         booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
-                    StreamWriter txt = new StreamWriter(@"C:\Test\books.txt");
-                    txt.Write("{0}+{1}+{2}+{3}+{4}+{5}+{6}+{7}", booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
+                    StreamWriter txt = new StreamWriter(@"C:\Test\books.txt", true);
+                    txt.WriteLine("{0}+{1}+{2}+{3}+{4}+{5}+{6}+{7}", booksAddForm.Author, booksAddForm.BookName, booksAddForm.Genre, booksAddForm.Description,
                         booksAddForm.YearOfPublication, booksAddForm.KeyWords, booksAddForm.Rating, booksAddForm.IsbnNumber);
                     txt.Flush();
                     txt.Close();
@@ -243,7 +245,37 @@ namespace Library
 
 
             }
-           
+
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentUsername!=string.Empty)
+            {
+            string isbn = Interaction.InputBox("Please fill in book ISBN number:", "Find book");
+            if (isbn == string.Empty) return;          
+            ListViewItem specItem = bookManager.ViewInfoForSpecificBook(isbn);
+                if (specItem==null)
+                {
+                    MessageBox.Show("You don't have a book with this ISBN number!");
+                }
+                else
+                {
+            listView.Items.Clear();
+            listView.Items.Add(specItem);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("You should log in!");
+            }
+
         }
     }
 }

@@ -24,13 +24,13 @@ namespace Library
     {
         List<Book> books = new List<Book>();
 
-        public void AddBook(string author, string bookName, string genre, string description, string yearOfPublication, string keyWords, string rating, string isbnNumber )
+        public void AddBook(string author, string bookName, string genre, string description, string yearOfPublication, string keyWords, string rating, string isbnNumber)
         {
             double rate;
             if (double.TryParse(rating, out rate))
             {
-            Book book = new Book(author, bookName, genre, description, yearOfPublication, keyWords, rate, isbnNumber);
-            books.Add(book);
+                Book book = new Book(author, bookName, genre, description, yearOfPublication, keyWords, rate, isbnNumber);
+                books.Add(book);
             }
             else
             {
@@ -43,17 +43,22 @@ namespace Library
         {
             return books;
         }
-        public void ViewInfoForSpecificBook(string bookID)
+        public ListViewItem ViewInfoForSpecificBook(string bookID)
         {
+            ListViewItem specItem = null;
             for (int i = 0; i < books.Count; i++)
             {
                 if (bookID == books[i].ID)
                 {
-                    Console.WriteLine($"- {books[i].Author}, {books[i].Name}, {books[i].Type}, {books[i].Desctiption}, " +
-                        $"{books[i].YearOfPublication}, {books[i].Rating}, {books[i].ID}");
+                    specItem = new ListViewItem(books[i].Name);                  
+                    specItem.SubItems.Add(books[i].Author);
+                    specItem.SubItems.Add(books[i].Type);
+                    specItem.SubItems.Add(books[i].ID);
+                    specItem.SubItems.Add(books[i].Desctiption);
                     break;
                 }
             }
+            return specItem;
         }
         public List<Book> FindBookByCriteria(SearchingCriteria criteria, string keyword)//???
         {
