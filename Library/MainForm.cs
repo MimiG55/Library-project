@@ -17,8 +17,8 @@ namespace Library
         private User curentUser = null;
         private string currentUsername = string.Empty;
         private BookManager bookManager = new BookManager();
-
         private UserManager usersList = new UserManager();
+       
         public MainForm()
         {
             InitializeComponent();
@@ -36,6 +36,12 @@ namespace Library
                 {
                     usersList.AddUser(user[0], user[1], UserRights.Regular);
                 }
+            }
+            StreamReader bookReader = new StreamReader(@"C:\Test\books.txt");
+            while ((line = bookReader.ReadLine())!=null)
+            {
+                List<string> books = line.Split('+').ToList();
+
             }
 
         }
