@@ -250,24 +250,45 @@ namespace Library
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FindBookForm fbf = new FindBookForm();
+            fbf.Show();
+            while (!fbf.findClicked)
+            {
+                Application.DoEvents();
+            }
+            if (fbf.searchWords == string.Empty)
+            {
+                MessageBox.Show("You need to fill in keywords in the Find Book Form!");
+                return;
+            }
+            ListViewItem findBook = bookManager.FindBookByCriteria(fbf.criteria, fbf.searchWords);
+            if (currentUsername != string.Empty && findBook != null)
+            {
+                listView.Items.Clear();
+                listView.Items.Add(findBook);
+            }
+            else
+            {
+                MessageBox.Show("You don't have a book with this criteria!");
+            }
         }
 
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentUsername!=string.Empty)
+            if (currentUsername != string.Empty)
             {
-            string isbn = Interaction.InputBox("Please fill in book ISBN number:", "Find book");
-            if (isbn == string.Empty) return;          
-            ListViewItem specItem = bookManager.ViewInfoForSpecificBook(isbn);
-                if (specItem==null)
+                string isbn = Interaction.InputBox("Please fill in book ISBN number:", "Find book");
+                if (isbn == string.Empty) return;
+                ListViewItem specItem = bookManager.ViewInfoForSpecificBook(isbn);
+                if (specItem == null)
                 {
                     MessageBox.Show("You don't have a book with this ISBN number!");
                 }
                 else
                 {
-            listView.Items.Clear();
-            listView.Items.Add(specItem);
+
+                    listView.Items.Clear();
+                    listView.Items.Add(specItem);
 
                 }
             }

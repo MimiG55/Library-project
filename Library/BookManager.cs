@@ -50,7 +50,7 @@ namespace Library
             {
                 if (bookID == books[i].ID)
                 {
-                    specItem = new ListViewItem(books[i].Name);                  
+                    specItem = new ListViewItem(books[i].Name);
                     specItem.SubItems.Add(books[i].Author);
                     specItem.SubItems.Add(books[i].Type);
                     specItem.SubItems.Add(books[i].ID);
@@ -60,11 +60,11 @@ namespace Library
             }
             return specItem;
         }
-        public List<Book> FindBookByCriteria(SearchingCriteria criteria, string keyword)//???
+        public ListViewItem FindBookByCriteria(SearchingCriteria criteria, string keyword)//???
         {
             List<string> comand = keyword.Split(' ').ToList();
             int numKeywords = comand.Count;
-            List<Book> searchedBook = new List<Book>();
+            ListViewItem searchedBook = null;
 
             if (SearchingCriteria.Title == criteria)
             {
@@ -74,7 +74,11 @@ namespace Library
                     {
                         if (books[i].Name.Contains(comand[j]))
                         {
-                            searchedBook.Add(books[i]);
+                            searchedBook = new ListViewItem(books[i].Name);
+                            searchedBook.SubItems.Add(books[i].Author);
+                            searchedBook.SubItems.Add(books[i].Type);
+                            searchedBook.SubItems.Add(books[i].ID);
+                            searchedBook.SubItems.Add(books[i].Desctiption);
                             break;
                         }
                     }
@@ -88,7 +92,11 @@ namespace Library
                     {
                         if (books[i].Author.Contains(comand[j]))
                         {
-                            searchedBook.Add(books[i]);
+                            searchedBook = new ListViewItem(books[i].Name);
+                            searchedBook.SubItems.Add(books[i].Author);
+                            searchedBook.SubItems.Add(books[i].Type);
+                            searchedBook.SubItems.Add(books[i].ID);
+                            searchedBook.SubItems.Add(books[i].Desctiption);
                             break;
                         }
                     }
@@ -102,7 +110,11 @@ namespace Library
                     {
                         if (books[i].KeyWords.Contains(comand[j]))
                         {
-                            searchedBook.Add(books[i]);
+                            searchedBook = new ListViewItem(books[i].Name);
+                            searchedBook.SubItems.Add(books[i].Author);
+                            searchedBook.SubItems.Add(books[i].Type);
+                            searchedBook.SubItems.Add(books[i].ID);
+                            searchedBook.SubItems.Add(books[i].Desctiption);
                             break;
                         }
                     }
