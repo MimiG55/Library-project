@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using System.Data.SqlClient;
 
 namespace Library
 {
@@ -24,8 +25,14 @@ namespace Library
         {
             InitializeComponent();
             usersList.AddUser("admin", "i<3c++", UserRights.Admin);
+            //SqlConnection connection = new SqlConnection("Data Source=.;Initial Catalog=Library;Integrated Security=True");
+            //connection.Open();
+            //SqlCommand cmd = new SqlCommand("INSERT INTO books (Author, Name, Type, Description, yearOfPublication, KeyWords, Rating, ISBN_number) VALUES ('Robert Jordan', 'The Eye of the World' , 'fantasy', 'The Eye of the World revolves around the three boys from Emond''s Field and that has also drawn the attention of Ba''alzamon. Their regular country lives are thrown into chaos and they must flee and fight back against Trollocs as they make their way across the country', 1990, 'eye, wheel, world', 6, 12546 )", connection);
+            //cmd.ExecuteNonQuery();
             StreamReader reader = new StreamReader(@"C:\Test\users.txt");
             string line;
+
+
             while ((line = reader.ReadLine()) != null)
             {
                 List<string> user = line.Split(' ').ToList();
@@ -262,7 +269,7 @@ namespace Library
                 return;
             }
             ListViewItem findBook = bookManager.FindBookByCriteria(fbf.criteria, fbf.searchWords);
-            if (currentUsername != string.Empty && findBook != null)
+            if (currentUsername != string.Empty && findBook != null) 
             {
                 listView.Items.Clear();
                 listView.Items.Add(findBook);
@@ -272,7 +279,7 @@ namespace Library
                 MessageBox.Show("You don't have a book with this criteria!");
             }
         }
-
+ 
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (currentUsername != string.Empty)
