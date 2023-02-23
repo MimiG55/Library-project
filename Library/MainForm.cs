@@ -25,37 +25,79 @@ namespace Library
         {
             InitializeComponent();
             usersList.AddUser("admin", "i<3c++", UserRights.Admin);
-            //SqlConnection connection = new SqlConnection("Data Source=.;Initial Catalog=Library;Integrated Security=True");
+            SqlConnection connection = new SqlConnection("Data Source=.;Initial Catalog=Library;Integrated Security=True");
             //connection.Open();
-            //SqlCommand cmd = new SqlCommand("INSERT INTO books (Author, Name, Type, Description, yearOfPublication, KeyWords, Rating, ISBN_number) VALUES ('Robert Jordan', 'The Eye of the World' , 'fantasy', 'The Eye of the World revolves around the three boys from Emond''s Field and that has also drawn the attention of Ba''alzamon. Their regular country lives are thrown into chaos and they must flee and fight back against Trollocs as they make their way across the country', 1990, 'eye, wheel, world', 6, 12546 )", connection);
+            //SqlCommand cmd = new SqlCommand();"INSERT INTO books (Author, Name, Type, Description, yearOfPublication, KeyWords, Rating, ISBN_number) VALUES ('Robert Jordan', 'The Eye of the World' , 'fantasy', 'The Eye of the World revolves around the three boys from Emond''s Field and that has also drawn the attention of Ba''alzamon. Their regular country lives are thrown into chaos and they must flee and fight back against Trollocs as they make their way across the country', 1990, 'eye, wheel, world', 6, 12546 )", connection);
             //cmd.ExecuteNonQuery();
-            StreamReader reader = new StreamReader(@"C:\Test\users.txt");
-            string line;
-
-
-            while ((line = reader.ReadLine()) != null)
+            //StreamReader reader = new StreamReader(@"C:\Test\users.txt");//reads from the file with users 
+            //string line;
+            SqlCommand cmdUsers = new SqlCommand("Select * from users", connection);
+            connection.Open();
+            SqlDataReader userReader = cmdUsers.ExecuteReader();
+            while (userReader.Read())
             {
-                List<string> user = line.Split(' ').ToList();
-                if (user[2].Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                string username = userReader.GetString(0);
+                string password = userReader.GetString(1);
+                string rights = userReader.GetString(2);
+                if (rights.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                 {
-                    usersList.AddUser(user[0], user[1], UserRights.Admin);
+                    usersList.AddUser(username, password, UserRights.Admin);
                 }
                 else
                 {
-                    usersList.AddUser(user[0], user[1], UserRights.Regular);
+                    usersList.AddUser(username, password, UserRights.Regular);
                 }
             }
-            StreamReader bookReader = new StreamReader(@"C:\Test\books.txt");
-            while ((line = bookReader.ReadLine()) != null)
-            {
-                List<string> books = line.Split('+').ToList();
-                //if (currentUsername != string.Empty)
-                //{
-                bookManager.AddBook(books[0], books[1], books[2], books[3], books[4], books[5], books[6], books[7]);
-                //}
-            }
+            connection.Close();
 
+            //while ((line = reader.ReadLine()) != null)
+            //{
+            //    List<string> user = line.Split(' ').ToList();
+            //    if (user[2].Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        usersList.AddUser(user[0], user[1], UserRights.Admin);
+            //    }
+            //    else
+            //    {
+            //        usersList.AddUser(user[0], user[1], UserRights.Regular);
+            //    }
+            //}
+
+            
+
+            // Assuming you have a connection string for your database stored in a variable named "connectionString"
+            SqlCommand cmdBook = new SqlCommand("SELECT * FROM books", connection);
+            connection.Open();
+            SqlDataReader bookReader = cmdBook.ExecuteReader();
+
+            while (bookReader.Read())
+            {
+                string author = bookReader.GetString(0);
+                string name = bookReader.GetString(1);
+                string type = bookReader.GetString(2);
+                string decsription = bookReader.GetString(3);
+                string yearfPublication = bookReader.GetString(4);
+                string keyWords = bookReader.GetString(5);
+                decimal rating = bookReader.GetDecimal(6);
+                int isbnNum = bookReader.GetInt32(7);
+
+                bookManager.AddBook(author, name, type, decsription, yearfPublication, keyWords, rating.ToString(), isbnNum.ToString());
+            }
+            //bookReader.Close();
+            connection.Close();
         }
+
+        //StreamReader bookReader = new StreamReader(@"C:\Test\books.txt");
+        //while ((line = bookReader.ReadLine()) != null)
+        //{
+        //    List<string> books = line.Split('+').ToList();
+        //    //if (currentUsername != string.Empty)
+        //    //{
+        //    bookManager.AddBook(books[0], books[1], books[2], books[3], books[4], books[5], books[6], books[7]);
+        //    //}
+        //}
+
+
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -269,7 +311,7 @@ namespace Library
                 return;
             }
             ListViewItem findBook = bookManager.FindBookByCriteria(fbf.criteria, fbf.searchWords);
-            if (currentUsername != string.Empty && findBook != null) 
+            if (currentUsername != string.Empty && findBook != null)
             {
                 listView.Items.Clear();
                 listView.Items.Add(findBook);
@@ -279,7 +321,7 @@ namespace Library
                 MessageBox.Show("You don't have a book with this criteria!");
             }
         }
- 
+
         private void viewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (currentUsername != string.Empty)
@@ -307,3 +349,4 @@ namespace Library
         }
     }
 }
+
