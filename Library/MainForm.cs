@@ -20,12 +20,12 @@ namespace Library
         private string currentUsername = string.Empty;
         private BookManager bookManager = new BookManager();
         private UserManager usersList = new UserManager();
+        private SqlConnection connection = new SqlConnection("Data Source=.;Initial Catalog=Library;Integrated Security=True");
 
         public MainForm()
         {
             InitializeComponent();
             usersList.AddUser("admin", "i<3c++", UserRights.Admin);
-            SqlConnection connection = new SqlConnection("Data Source=.;Initial Catalog=Library;Integrated Security=True");
             //connection.Open();
             //SqlCommand cmd = new SqlCommand();"INSERT INTO books (Author, Name, Type, Description, yearOfPublication, KeyWords, Rating, ISBN_number) VALUES ('Robert Jordan', 'The Eye of the World' , 'fantasy', 'The Eye of the World revolves around the three boys from Emond''s Field and that has also drawn the attention of Ba''alzamon. Their regular country lives are thrown into chaos and they must flee and fight back against Trollocs as they make their way across the country', 1990, 'eye, wheel, world', 6, 12546 )", connection);
             //cmd.ExecuteNonQuery();
@@ -63,7 +63,7 @@ namespace Library
             //    }
             //}
 
-            
+
 
             // Assuming you have a connection string for your database stored in a variable named "connectionString"
             SqlCommand cmdBook = new SqlCommand("SELECT * FROM books", connection);
@@ -171,19 +171,31 @@ namespace Library
                         }
                         if (usersList.GetUser(addForm.Username) == null)//user don't exist
                         {
-                            StreamWriter txt = new StreamWriter(@"C:\Test\users.txt", true);
+                            //StreamWriter txt = new StreamWriter(@"C:\Test\users.txt", true);
+                            connection.Open();
                             if (addForm.IsAdmin)//if the new user is with admin rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Admin);
-                                txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Admin}");
+                                SqlCommand cmd = new SqlCommand("INSERT INTO users (username, password, rights) VALUES (@username, @password, @rights)", connection);
+                                cmd.Parameters.AddWithValue("@username", addForm.Username);
+                                cmd.Parameters.AddWithValue("@password", addForm.Password);
+                                cmd.Parameters.AddWithValue("@rights",UserRights.Admin.ToString());
+                                cmd.ExecuteNonQuery();
+                                //txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Admin}");
                             }
                             else//if the new user is with regular rights
                             {
                                 usersList.AddUser(addForm.Username, addForm.Password, UserRights.Regular);
-                                txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Regular}");
+                                SqlCommand cmd = new SqlCommand("INSERT INTO users (username, password, rights) VALUES (@username, @password, @rights)", connection);
+                                cmd.Parameters.AddWithValue("@username", addForm.Username);
+                                cmd.Parameters.AddWithValue("@password", addForm.Password);
+                                cmd.Parameters.AddWithValue("@rights", UserRights.Regular.ToString());
+                                cmd.ExecuteNonQuery();
+                                //txt.WriteLine($"{addForm.Username} {addForm.Password} {UserRights.Regular}");
                             }
-                            txt.Flush();
-                            txt.Close();
+                            connection.Close();
+                            //txt.Flush();
+                            //txt.Close();
 
                         }
                         else//the user is already exist
